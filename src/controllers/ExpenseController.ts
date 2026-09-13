@@ -60,7 +60,7 @@ export class ExpenseController {
 
             const existingUser = await expenseRepository.findByUserId(userId);
 
-            if (existingUser) {
+            if (!existingUser) {
                 return res.status(409).json({ message: "Usuário não cadastrado no sistema", });
             }
 

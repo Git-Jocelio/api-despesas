@@ -6,8 +6,8 @@ const app = express();
 
 app.use(express.json());
 
-app.use("user", userRoutes);
-app.use("expenses", expenseRoutes);
+app.use("/user", userRoutes);
+app.use("/expenses", expenseRoutes);
 
 app.get("/",(req, res) => {
     res.json({
