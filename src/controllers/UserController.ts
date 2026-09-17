@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
+import bcrypt from "bcryptjs";
 import { UserRepository } from "../repositories/UserRepository";
+import { parseId } from "../utils/parseId";
 
 const userRepository = new UserRepository();
 
@@ -18,7 +20,10 @@ export class UserController {
 
     async findById(req: Request, res: Response) {
         try {
-            const id = Number(req.params.id);
+            const id = parseId(req.params.id);
+            if (id === null) {
+                return res.status(400).json({ message: "ID inválido", });
+            }
 
             const user = await userRepository.findById(id);
             if (!user) {
@@ -49,7 +54,9 @@ export class UserController {
                 return res.status(409).json({ message: "E-mail já cadastrado", });
             }
 
-            const user = await userRepository.create(name, email, password);
+            const passwordHash = await bcrypt.hash(password, 10);
+
+            const user = await userRepository.create(name, email, passwordHash);
 
             return res.status(201).json(user);
 
@@ -59,4 +66,4 @@ export class UserController {
             });
         }
     }
-}//fim da classe
+}
