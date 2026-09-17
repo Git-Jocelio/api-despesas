@@ -1,14 +1,13 @@
 import { eq } from "drizzle-orm";
 import { db } from "../db";
 import { expenses } from "../db/schema";
-import { Result } from "pg";
 
 export class ExpenseRepository {
     async findAll() {
         return await db.select().from(expenses);
     }
 
-    async findByById(id: number) {
+    async findById(id: number) {
         const result = await db
             .select()
             .from(expenses)
@@ -36,4 +35,4 @@ export class ExpenseRepository {
        return result[0]; 
     }
 
-}//fim classe
+}
